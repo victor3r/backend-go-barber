@@ -1,11 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export default class CreateAppointments1593470442567
-  implements MigrationInterface {
+export default class CreateUsers1593552002784 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'appointments',
+        name: 'users',
         columns: [
           {
             name: 'id',
@@ -15,12 +14,17 @@ export default class CreateAppointments1593470442567
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'provider',
+            name: 'name',
             type: 'varchar',
           },
           {
-            name: 'date',
-            type: 'timestamp with time zone',
+            name: 'email',
+            type: 'varchar',
+            isUnique: true,
+          },
+          {
+            name: 'password',
+            type: 'varchar',
           },
           {
             name: 'created_at',
@@ -38,10 +42,11 @@ export default class CreateAppointments1593470442567
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('appointments');
+    await queryRunner.dropTable('users');
   }
 }
 
 /**
- * Só deve alterar uma migration se ela não foi enviada para o sistema de controle de versão
+ * É comun salvar a data de criação de um usuário nos sistemas
+ * É interessante salvar também as datas de alterações para monitoramento/revisão do usuário e logs de administração
  */

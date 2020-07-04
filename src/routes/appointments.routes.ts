@@ -5,6 +5,8 @@ import { parseISO } from 'date-fns';
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
 import CreateAppointmentService from '../services/CreateAppointmentService';
 
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+
 const appointmentsRouter = Router();
 
 /**
@@ -15,6 +17,8 @@ const appointmentsRouter = Router();
 
 // SoC: Separation of Concerns (SRP)
 // DTO: Data Transfer Object (parâmetros nomeados)
+
+appointmentsRouter.use(ensureAuthenticated);
 
 appointmentsRouter.get('/', async (request, response) => {
   const appointmentsRepository = getCustomRepository(AppointmentsRepository);

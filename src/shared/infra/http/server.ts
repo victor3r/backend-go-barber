@@ -40,3 +40,22 @@ app.listen(3333, () => {
 
 // DDD: Domain Driven Design (Metodologia)
 // TDD: Test Driven Development (Metodologia)
+
+// Testes automatizados
+/* Garantem que a aplicação continue funcionando independente do número de novas funcionalidades e do número de devs no time. */
+
+// 1. Testes unitários (TDD): testam funcionalidades específicas da aplicação (precisam ser funções puras).
+/* Funções puras não realizam chamadas à APIs e não possuem efeitos colaterais. */
+
+// 2. Testes de integração: testam uma funcionalidade completa, passando por várias camadas da aplicação.
+/* Route -> Controller -> Service -> Repository -> ... */
+
+// 3. Testes E2E: simulam a ação do usuário dentro da aplicação.
+/*
+  1. Clique no input de email
+  2. Preencha victor@rocketseat.com.br
+  3. Clique no input de senha
+  4. Preencha 12345
+  5. Clique no botão "Logar"
+  6. Espero que a página tenha enviado o usuário para o dashboard
+*/

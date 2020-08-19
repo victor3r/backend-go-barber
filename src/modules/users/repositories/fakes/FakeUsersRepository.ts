@@ -1,5 +1,4 @@
 import { uuid } from 'uuidv4';
-import { hash } from 'bcryptjs';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
@@ -21,16 +20,10 @@ class FakeUsersRepository implements IUsersRepository {
     return findUser;
   }
 
-  public async create({
-    name,
-    email,
-    password,
-  }: ICreateUserDTO): Promise<User> {
+  public async create(data: ICreateUserDTO): Promise<User> {
     const user = new User();
 
-    const hashedPassword = await hash(password, 8);
-
-    Object.assign(user, { id: uuid(), name, email, password: hashedPassword });
+    Object.assign(user, { id: uuid() }, data);
 
     this.users.push(user);
 

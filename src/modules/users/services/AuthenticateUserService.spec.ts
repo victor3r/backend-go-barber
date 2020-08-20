@@ -44,30 +44,15 @@ describe('AuthenticateUser', () => {
     const fakeUsersRepository = new FakeUsersRepository();
     const fakeHashProvider = new FakeHashProvider();
 
-    const createUser = new CreateUserService(
-      fakeUsersRepository,
-      fakeHashProvider,
-    );
-
     const authenticateUser = new AuthenticateUserService(
       fakeUsersRepository,
       fakeHashProvider,
     );
 
-    const userName = 'John Doe';
-    const userEmail = 'johndoe@example.com';
-    const userPassword = '123456';
-
-    await createUser.execute({
-      name: userName,
-      email: userEmail,
-      password: userPassword,
-    });
-
     expect(
       authenticateUser.execute({
-        email: 'janedoe@example.com',
-        password: userPassword,
+        email: 'johndoe@example.com',
+        password: '123456',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -99,7 +84,7 @@ describe('AuthenticateUser', () => {
     expect(
       authenticateUser.execute({
         email: userEmail,
-        password: '12345',
+        password: 'incorrect-password',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

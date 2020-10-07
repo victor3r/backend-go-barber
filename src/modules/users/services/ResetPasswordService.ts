@@ -29,7 +29,7 @@ class ResetPasswordService {
     const userToken = await this.userTokensRepository.findByToken(token);
 
     if (!userToken) {
-      throw new AppError('User token not provided');
+      throw new AppError('Invalid user token');
     }
 
     const { created_at } = userToken;

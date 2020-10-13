@@ -29,13 +29,13 @@ class ResetPasswordService {
     const userToken = await this.userTokensRepository.findByToken(token);
 
     if (!userToken) {
-      throw new AppError('Invalid user token');
+      throw new AppError('Invalid user token.');
     }
 
     const { created_at } = userToken;
 
     if (differenceInHours(Date.now(), created_at) > 2) {
-      throw new AppError('User token expired');
+      throw new AppError('User token expired.');
     }
 
     const { user_id } = userToken;
@@ -43,7 +43,7 @@ class ResetPasswordService {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
-      throw new AppError('User does not exist');
+      throw new AppError('User does not exist.');
     }
 
     const hashedPassword = await this.hashProvider.generateHash(password);

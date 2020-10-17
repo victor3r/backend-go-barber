@@ -11,7 +11,7 @@ import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
  *  Responsável pela regra de negócio
  *  Não tem acesso direto aos dados de requisição e resposta
  *  Responsabilidade única (1 método execute)
- *  Ajuda a não ferir os pricípios do DRY
+ *  Ajuda a não ferir os princípios do DRY
  */
 
 // Dependency Inversion Principle (DIP): não é instanciado classes dentro dos services

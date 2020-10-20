@@ -1,6 +1,7 @@
 import { injectable, inject } from 'tsyringe';
+import { getDaysInMonth } from 'date-fns';
 
-// import AppError from '@shared/errors/AppError';
+import AppError from '@shared/errors/AppError';
 
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
@@ -31,11 +32,11 @@ export default class ListProviderMonthAvailabilityService {
     month,
     year,
   }: IRequest): Promise<IResponse> {
-    // const user = await this.usersRepository.findById(provider_id);
+    const provider = await this.usersRepository.findById(provider_id);
 
-    // if (!user) {
-    //   throw new AppError('User not found');
-    // }
+    if (!provider) {
+      throw new AppError('Provider not found.');
+    }
 
     const appointments = await this.appointmentsRepository.findAllInMonthFromProvider(
       {
@@ -45,9 +46,21 @@ export default class ListProviderMonthAvailabilityService {
       },
     );
 
-    return appointments.map(appointment => ({
-      day: appointment.date.getDate(),
-      available: !!appointment.date,
-    }));
+    const numberOfDaysInMonth = getDaysInMonth(new Date(year, month - 1));
+
+    const eachDayArray = Array.from(
+      { length: numberOfDaysInMonth },
+      (_, index) => index + 1,
+    );
+
+    const availability = eachDayArray.map(day => {
+      const appointmentsInDay = appointments.filter(
+        appointment => appointment.date.getDate() === day,
+      );
+
+      return { day, available: appointmentsInDay.length < 10 };
+    });
+
+    return availability;
   }
 }

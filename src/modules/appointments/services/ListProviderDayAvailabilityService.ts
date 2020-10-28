@@ -1,4 +1,5 @@
 import { injectable, inject } from 'tsyringe';
+import { isAfter } from 'date-fns';
 
 import AppError from '@shared/errors/AppError';
 
@@ -50,12 +51,20 @@ export default class ListProviderDayAvailabilityService {
       (_, index) => index + hourStart,
     );
 
-    const availability = eachHourArray.map(hour => ({
-      hour,
-      available: !appointments.find(
+    const currentDate = new Date(Date.now());
+
+    const availability = eachHourArray.map(hour => {
+      const hasAppointmentInHour = appointments.find(
         appointment => appointment.date.getHours() === hour,
-      ),
-    }));
+      );
+
+      const compareDate = new Date(year, month - 1, day, hour);
+
+      return {
+        hour,
+        available: !hasAppointmentInHour && isAfter(compareDate, currentDate),
+      };
+    });
 
     return availability;
   }

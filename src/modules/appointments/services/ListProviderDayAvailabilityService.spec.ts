@@ -8,6 +8,7 @@ let fakeAppointmentsRepository: FakeAppointmentsRepository;
 let fakeUsersRepository: FakeUsersRepository;
 let listProviderDayAvailability: ListProviderDayAvailabilityService;
 let provider: User;
+let user: User;
 
 describe('ListProviderDayAvailability', () => {
   beforeEach(async () => {
@@ -24,31 +25,42 @@ describe('ListProviderDayAvailability', () => {
       email: 'johndoe@example.com',
       password: '123123',
     });
+
+    user = await fakeUsersRepository.create({
+      name: 'Jane Doe',
+      email: 'janedoe@example.com',
+      password: '123123',
+    });
   });
 
   it('should be able to list the available hours in a day', async () => {
     await fakeAppointmentsRepository.create({
       provider_id: provider.id,
+      user_id: user.id,
       date: new Date(2020, 9, 19, 8, 0, 0),
     });
 
     await fakeAppointmentsRepository.create({
       provider_id: provider.id,
+      user_id: user.id,
       date: new Date(2020, 9, 19, 10, 0, 0),
     });
 
     await fakeAppointmentsRepository.create({
       provider_id: provider.id,
+      user_id: user.id,
       date: new Date(2020, 9, 19, 12, 0, 0),
     });
 
     await fakeAppointmentsRepository.create({
       provider_id: provider.id,
+      user_id: user.id,
       date: new Date(2020, 9, 19, 14, 0, 0),
     });
 
     await fakeAppointmentsRepository.create({
       provider_id: provider.id,
+      user_id: user.id,
       date: new Date(2020, 9, 19, 16, 0, 0),
     });
 

@@ -1,4 +1,5 @@
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
+import AppError from '@shared/errors/AppError';
 import User from '@modules/users/infra/typeorm/entities/User';
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 
@@ -31,6 +32,17 @@ describe('ListProviderDayAvailability', () => {
       email: 'janedoe@example.com',
       password: '123123',
     });
+  });
+
+  it('should not be able to list the available hours in a day from a nonexistent provider', async () => {
+    await expect(
+      listProviderDayAvailability.execute({
+        provider_id: 'nonexistent-provider',
+        day: 19,
+        year: 2020,
+        month: 10,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 
   it('should be able to list the available hours in a day', async () => {

@@ -1,4 +1,4 @@
-import { startOfHour } from 'date-fns';
+import { startOfHour, isBefore } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
@@ -50,7 +50,21 @@ class CreateAppointmentService {
       throw new AppError('Provider not found.');
     }
 
+    if (provider_id === user_id) {
+      throw new AppError("You can't create an appointment with yourself.");
+    }
+
     const appointmentDate = startOfHour(date);
+
+    if (isBefore(appointmentDate, Date.now())) {
+      throw new AppError("You can't create an appointment on a past date.");
+    }
+
+    if (appointmentDate.getHours() < 8 || appointmentDate.getHours() > 17) {
+      throw new AppError(
+        'You can only create appointments between 8am and 5pm.',
+      );
+    }
 
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
       appointmentDate,

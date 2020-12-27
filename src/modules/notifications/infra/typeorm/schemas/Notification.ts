@@ -3,13 +3,9 @@ import {
   ObjectID,
   ObjectIdColumn,
   Column,
-  ManyToOne,
-  JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
-import User from '@modules/users/infra/typeorm/entities/User';
 
 @Entity('notifications')
 class Notification {
@@ -19,9 +15,8 @@ class Notification {
   @Column()
   content: string;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'recipient_id' })
-  recipient: User;
+  @Column('uuid')
+  recipient_id: string;
 
   @Column({ default: false })
   read: boolean;

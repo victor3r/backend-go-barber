@@ -4,11 +4,13 @@ import User from '@modules/users/infra/typeorm/entities/User';
 
 import FakeAppointmentsRepository from '@modules/appointments/repositories/fakes/FakeAppointmentsRepository';
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
+import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
 
 import CreateAppointmentService from './CreateAppointmentService';
 
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
 let fakeUsersRepository: FakeUsersRepository;
+let fakeNotificationsRepository: FakeNotificationsRepository;
 let createAppointment: CreateAppointmentService;
 let provider: User;
 let user: User;
@@ -17,10 +19,12 @@ describe('CreateAppointment', () => {
   beforeEach(async () => {
     fakeAppointmentsRepository = new FakeAppointmentsRepository();
     fakeUsersRepository = new FakeUsersRepository();
+    fakeNotificationsRepository = new FakeNotificationsRepository();
 
     createAppointment = new CreateAppointmentService(
       fakeAppointmentsRepository,
       fakeUsersRepository,
+      fakeNotificationsRepository,
     );
 
     provider = await fakeUsersRepository.create({

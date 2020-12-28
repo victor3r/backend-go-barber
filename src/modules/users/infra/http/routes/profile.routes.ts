@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import multer from 'multer';
+import { celebrate, Segments, Joi } from 'celebrate';
 import uploadConfig from '@config/upload';
 
 import ProfileController from '../controllers/ProfileController';
@@ -15,8 +16,22 @@ const upload = multer(uploadConfig);
 
 profileRouter.use(ensureAuthenticated);
 
-profileRouter.put('/', profileController.update);
+profileRouter.put(
+  '/',
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      name: Joi.string().required(),
+      email: Joi.string().email().required(),
+      old_password: Joi.string(),
+      password: Joi.string(),
+      password_confirmation: Joi.string().valid(Joi.ref('password')),
+    }),
+  }),
+  profileController.update,
+);
+
 profileRouter.get('/', profileController.show);
+
 profileRouter.patch(
   '/avatar',
   upload.single('avatar'),

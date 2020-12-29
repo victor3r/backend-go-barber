@@ -1,3 +1,4 @@
+import { Exclude, Expose } from 'class-transformer';
 import {
   Entity,
   Column,
@@ -20,9 +21,11 @@ class User {
   email: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @Column()
+  @Exclude()
   avatar: string;
 
   @CreateDateColumn()
@@ -30,6 +33,13 @@ class User {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @Expose()
+  get avatar_url(): string | null {
+    return this.avatar
+      ? `${process.env.APP_API_URL}/files/${this.avatar}`
+      : null;
+  }
 }
 
 export default User;

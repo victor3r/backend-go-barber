@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import uploadConfig from '@config/upload';
 
 // KISS - Keep It Simple & Stupid
 
@@ -36,9 +37,16 @@ class User {
 
   @Expose()
   get avatar_url(): string | null {
-    return this.avatar
-      ? `${process.env.APP_API_URL}/files/${this.avatar}`
-      : null;
+    if (!this.avatar) {
+      return null;
+    }
+
+    switch (uploadConfig.driver) {
+      case 's3':
+        return `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.avatar}`;
+      default:
+        return `${process.env.APP_API_URL}/files/${this.avatar}`;
+    }
   }
 }
 

@@ -12,7 +12,7 @@ const profileRouter = Router();
 const profileController = new ProfileController();
 const userAvatarController = new UserAvatarController();
 
-const upload = multer(uploadConfig);
+const upload = multer(uploadConfig.multer);
 
 profileRouter.use(ensureAuthenticated);
 

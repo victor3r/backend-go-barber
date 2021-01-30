@@ -1,12 +1,14 @@
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
 import AppError from '@shared/errors/AppError';
 import User from '@modules/users/infra/typeorm/entities/User';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 
 import ListProviderAppointmentsService from './ListProviderAppointmentsService';
 
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
 let fakeUsersRepository: FakeUsersRepository;
+let fakeCacheProvider: FakeCacheProvider;
 let listProviderAppointments: ListProviderAppointmentsService;
 let provider: User;
 let user: User;
@@ -15,10 +17,12 @@ describe('ListProviderAppointments', () => {
   beforeEach(async () => {
     fakeAppointmentsRepository = new FakeAppointmentsRepository();
     fakeUsersRepository = new FakeUsersRepository();
+    fakeCacheProvider = new FakeCacheProvider();
 
     listProviderAppointments = new ListProviderAppointmentsService(
       fakeAppointmentsRepository,
       fakeUsersRepository,
+      fakeCacheProvider,
     );
 
     provider = await fakeUsersRepository.create({
